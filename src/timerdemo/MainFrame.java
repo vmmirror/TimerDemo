@@ -5,11 +5,12 @@
  */
 package timerdemo;
 
-import com.sun.istack.internal.logging.Logger;
-import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -38,6 +39,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,6 +59,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel1.setText("0");
 
+        jLabel2.setText("Ready");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -69,7 +73,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(38, 38, 38))
             .addGroup(layout.createSequentialGroup()
                 .addGap(172, 172, 172)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -81,24 +87,31 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addGap(44, 44, 44)
                 .addComponent(jLabel1)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addContainerGap(151, Short.MAX_VALUE))
         );
 
-        jLabel1.getAccessibleContext().setAccessibleName("0");
+        jLabel2.getAccessibleContext().setAccessibleName("Running");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        mTimer = new Timer();
-        mTimer.schedule(new MyTimerTask(), 0, 1000);
+        if (mTimer!=null)
+        { mTimer.cancel();
+          mTimer=null;  
+          jLabel2.setText("Ready"); } else
+        { mTimer = new Timer();
+          mTimer.schedule(new MyTimerTask(), 0, 300);
+          jLabel2.setText("Running"); }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             // TODO add your handling code here:
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -148,5 +161,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     public javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
